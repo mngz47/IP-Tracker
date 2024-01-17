@@ -16,7 +16,10 @@ namespace IP_Tracker
             ConfigureAuth(app);
 
             //load geobase.dat into memory
-            Database.R_String();
+            //Database.R_Buffer_Byte();
+            //Database.R_Sequential_Byte();
+            Database.RR_String();
+
         }
     }
 

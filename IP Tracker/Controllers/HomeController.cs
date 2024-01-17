@@ -12,7 +12,8 @@ namespace IP_Tracker.Controllers
     {
         public ActionResult Index()
         {
-            var item = new GetViewModel() { Data = "" };
+
+            var item = new GetViewModel() { Data = "geobase.dat loaded in "+Database.ts.Milliseconds+" ms" };
             return View(item);
         }
 
@@ -25,14 +26,14 @@ namespace IP_Tracker.Controllers
         public ActionResult GetLocationByIp(string ip)
         {
 
-           var row =  Database.FindMyObject(Database.Data_s, ip);
+            Console.WriteLine("Route Works");
+            var row =  Database.FindMyObject(Database.data_s, ip);
 
             string[] cols = row.ToString().Split(' ');
 
-           
             var item = new GetViewModel() { Data = _mapper.Map<string>(cols) };
 
-            return View("~/Views/Home/Index.cshtml", item);
+            return View("~/Views/Home/_Home.cshtml", item);
         }
 
         //HTTP API method
@@ -41,8 +42,7 @@ namespace IP_Tracker.Controllers
         public ActionResult GetLocationByCity(string city)
         {
 
-
-            var row = Database.FindMyObject(Database.Data_s, city);
+            var row = Database.BinarySearchDisplay(Database.data_s, city);
 
             string[] cols = row.ToString().Split(' ');
 

@@ -1,0 +1,33 @@
+﻿<!-- ko with: home -->
+@model IP_Tracker.Models.GetViewModel
+@{
+    Layout = null;
+}
+<div class="jumbotron">
+    <p class="lead">Search Location by IP Address or City.</p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+
+        <form action="ip/location" method="get">
+            <input type=text name=ip class="form-control" placeholder="IP Address" />
+            <button class="btn-primary">Search</button>
+        </form>
+        <br /><br />
+        <form action="city/locations" method="get">
+            <input type=text name=city class="form-control"  placeholder="City" />
+            <button class="btn-primary">Search</button>
+        </form>
+
+    </div>
+
+    <div class="col-md-8">
+
+        @Model.Data
+
+    </div>
+
+
+</div>
+
+<!-- /ko -->

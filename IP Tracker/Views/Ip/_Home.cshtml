@@ -10,20 +10,24 @@
     <div class="col-md-4">
 
         <form action="ip/location" method="get">
-            <input type=text name=ip class="form-control" placeholder="IP Address" value="123.234.123.234" />
+            <input type=text name=ip class="form-control" placeholder="IP Address" />
             <button class="btn-primary" type="submit" >Search</button>
         </form>
         <br /><br />
         <form action="city/locations" method="get">
-            <input type=text name=city class="form-control"  placeholder="City" value="cit_Gbqw4" />
+            <input type=text name=city class="form-control"  placeholder="City" />
             <button class="btn-primary" type="submit" >Search</button>
         </form>
 
     </div>
 
     <div class="col-md-8">
-
-        @Model.Data
+        <p>@Model.Data</p>
+        <p>
+            [{"latitude":" @Model.Latitude"},{"longitude":" @Model.Longitude"}]
+        </p>
+       
+        <iframe src="https://dev.virtualearth.net/REST/v1/Imagery/Map/Road/@Model.Latitude,@Model.Longitude/15?mapSize=500,500&key=AjI58bqx5IgstGZVbrGwZRSVfLB1ZfCSrFcd1BJAeDwyhb7m9ughOqKcRd6XhGw4" width="500" height="500"></iframe>
 
     </div>
 

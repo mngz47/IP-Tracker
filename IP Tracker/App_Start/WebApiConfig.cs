@@ -28,6 +28,19 @@ namespace IP_Tracker
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            /*
+            config.Routes.MapHttpRoute(
+                name: "IpApi",
+                routeTemplate: "api/ip/location",
+                defaults: new { ip = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "CityApi",
+                routeTemplate: "api/city/locations",
+                defaults: new { city = RouteParameter.Optional }
+            );
+            */
         }
     }
 }

@@ -11,6 +11,8 @@ namespace IP_Tracker.Models
 
         public string Data { get; set; }
 
+        public string Config { get; set; }
+
         public string Latitude { get; set; }
 
         public string Longitude { get; set; }

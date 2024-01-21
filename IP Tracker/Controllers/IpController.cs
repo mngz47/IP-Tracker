@@ -31,11 +31,6 @@ namespace IP_Tracker.Controllers
              
              };
             
-            //For Debuging
-            //var dt = dd.DataFromMemory(HttpContext.ApplicationInstance.Context).Substring(0,60);
-            //var dt = dd.DataFromMemory(HttpContext.ApplicationInstance.Context);
-            //var item = new GetViewModel() { Data = dt};
-
             return View(item);
         }
 
@@ -48,40 +43,37 @@ namespace IP_Tracker.Controllers
             str_data += "[{'ip':'" + Database.IpToInt(ip) + "'}, ";
             str_data += "{'datasize':'" + data.Length + "'}, ";
 
-            string start = StructTools.RawDeserialize<Header>(data, 0, "offset_ranges");
-            string end = data.Length.ToString(); // StructTools.RawDeserialize<Header>(data, 0, "offset_cities");//
+            var start = StructTools.RawDeserialize<Header>(data, 0, "offset_ranges"); //Start of ip ranges index
+            var end = data.Length; //End of file and ip ranges index
            
             str_data += "{'offset_ranges':'" + start + "'},";
             str_data += "{'ranges_end':'" + end + "'}]";
 
             var loc_index = 0;
 
-            var intIp = Database.IpToInt(ip);
-
-            for (int i = Int32.Parse(start); i < Int32.Parse(end); i += 12)
+            var intIp = Database.IpToInt(ip);//Convert Ip to Integer 
+            //Iterate through ranges rows
+            for (int i = start; i < end; i += 12)
             {
                 
-                var ip_from = Int32.Parse(StructTools.RawDeserialize<Ranges>(data, i, "ip_from"));
-                var ip_to = Int32.Parse(StructTools.RawDeserialize<Ranges>(data, i, "ip_to"));
+                var ip_from = StructTools.RawDeserialize<Ranges>(data, i, "ip_from");
+                var ip_to = StructTools.RawDeserialize<Ranges>(data, i, "ip_to");
 
-                if (ip_from <= intIp && ip_to >= intIp)
+                if (ip_from <= intIp && ip_to >= intIp)//Finding range of Ip
                 {
-                    loc_index = Int32.Parse(StructTools.RawDeserialize<Ranges>(data, i, "location_index"));
+                    loc_index = StructTools.RawDeserialize<Ranges>(data, i, "location_index"); //Initializing index of latitue and longitute
                     break;
                 }
 
             }
 
-            string[] coord = { str_data, StructTools.RawDeserialize<Location>(data, loc_index, "latitude"), StructTools.RawDeserialize<Location>(data, loc_index, "longitude") };
+            var x = "" + Database.BinaryToFloat(""+StructTools.RawDeserialize<Location>(data, loc_index, "latitude"));
+            var y = "" + Database.BinaryToFloat(""+StructTools.RawDeserialize<Location>(data, loc_index, "longitude"));
 
+            string[] coord = { str_data, x , y };
 
             return coord;
         }
-
-
-
-      
-
 
     }
 }

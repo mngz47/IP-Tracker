@@ -360,6 +360,8 @@
     <Content Include="Views\City\_Home.cshtml" />
     <Content Include="Views\City\Index.cshtml" />
     <Resource Include="geobase.dat" />
+    <None Include="Properties\PublishProfiles\mngz47-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\mngz47-001-site1 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

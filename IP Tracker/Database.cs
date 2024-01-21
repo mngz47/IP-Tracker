@@ -11,7 +11,7 @@ using System.Net;
 namespace IP_Tracker{
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct Header
+    public struct Header //60bytes
     {
         int version;           // database version
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
@@ -24,7 +24,7 @@ namespace IP_Tracker{
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct Ranges
+    public struct Ranges //12bytes
     {
         uint ip_from;           // beginning of the range of IP addresses
         uint ip_to;             // end of the range of IP addresses
@@ -32,14 +32,14 @@ namespace IP_Tracker{
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct Bycity
+    public struct Bycity //4bytes
     {
-        uint location_index;           // beginning of the range of IP addresses
+    int location_index;
     }
 
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct Location
+    public struct Location //96bytes
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         sbyte[] country;        // country name (random string with the "cou_" prefix)
@@ -70,7 +70,7 @@ namespace IP_Tracker{
         {
             sw.Start();
 
-            const int bufferSize = 170 * 1024; //Will fetch data in 250kb chuncks
+            const int bufferSize = 350 * 1024; //Will fetch data in 250kb chuncks
 
             string sb = "";
             var buffer = new byte[bufferSize];
@@ -119,19 +119,33 @@ namespace IP_Tracker{
         }
 
         // Binary Search 
-        public static object FindMyObject(Array myArr, object myObject)
-    {
-        int myIndex=Array.BinarySearch(myArr, myObject);
-        if (myIndex < 0)
+        public static int BinarySearch(string[] aa, string a)
         {
-            return "No Match for "+myObject+" , "+~myIndex;
-
-        }else
-        {
-            return myArr.GetValue(myIndex);
-
+            int index = 0;
+            for (int i = 0; i < aa.Length; i++)
+            {
+                if ((sbyte)BinaryToInt(aa[i]) == (sbyte)BinaryToInt(a))
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
         }
-    }
+
+        public static int BinarySearch(int[] aa, int a)
+        {
+            int index = 0;
+            for (int i = 0; i < aa.Length; i++)
+            {
+                if ((sbyte)aa[i] == (sbyte)a)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        }
 
         // Data Utilities
         public static string ArrayToJson(string[] cols)
@@ -144,16 +158,15 @@ namespace IP_Tracker{
 
         public static int BinaryToInt(string dd)
         {
-            var bytes = Encoding.ASCII.GetBytes(dd);
-            return BitConverter.ToInt32(bytes, 0);
+            var buffer = Encoding.Unicode.GetBytes(dd);
+            return BitConverter.ToInt32(buffer, 0);
         }
 
         public static float BinaryToFloat(string dd)
         {
-            var buffer = new byte[8];
-            Encoding.ASCII.GetBytes(dd).CopyTo(buffer,0);
+            var buffer = new byte[16];
+            Encoding.Unicode.GetBytes(dd).CopyTo(buffer,0);
             return BitConverter.ToSingle(buffer, 0);
-
         }
 
         public static int IpToInt(string ip)
